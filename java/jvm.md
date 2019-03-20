@@ -1,21 +1,20 @@
-## 问：Parallel GC、CMS GC、ZGC、Azul Pauseless GC最主要的不同是？背后的原理也请简单描述下？
+## Parallel GC、CMS GC、ZGC、Azul Pauseless GC最主要的不同是？背后的原理也请简单描述下？
 
-答：Parallel GC的Young区采用的是Mark-Copy算法，Old区采用的是Mark-Sweep-Compact来实现，Parallel执行，所以决定了Parallel GC在执行YGC、FGC时都会Stop-The-World，但完成GC的速度也会比较快。
+Parallel GC的Young区采用的是Mark-Copy算法，Old区采用的是Mark-Sweep-Compact来实现，Parallel执行，所以决定了Parallel GC在执行YGC、FGC时都会Stop-The-World，但完成GC的速度也会比较快。
 CMS GC的Young区采用的也是Mark-Copy，Old区采用的是Concurrent Mark-Sweep，所以决定了CMS GC在对old区回收时造成的STW时间会更短，避免对应用产生太大的时延影响。
 G1 GC采用了Garbage First算法，比较复杂，实现的好呢，理论上是会比CMS GC可以更高效，同时对应用的影响也很小。
 ZGC、Azul Pauseless GC采用的算法很不一样，尤其是Pauseless GC，其中的很重要的一个技巧是通过增加Read Barrier来更好的识别对GC而言最关键的references变化的情况。
 
-## 问：什么时候执行ygc，fullgc？
+## 什么时候执行ygc，fullgc？
 
-答：当young gen中的eden区分配满的时候触发young gc，当年老代内存不足时，将执行Major GC，也叫 Full GC。
+当young gen中的eden区分配满的时候触发young gc，当年老代内存不足时，将执行Major GC，也叫 Full GC。
 
-## 问：java对象的生命周期？
+## java对象的生命周期？
 
-答：Eden -> Survivor (From -> To) -> Old -> Perm (永生带)
+Eden -> Survivor (From -> To) -> Old -> Perm (永生带)
 
-## 问：如何提高JVM的性能？
+## 如何提高JVM的性能？
 
-答：
 1. 新对象预留在年轻代
 通过设置一个较大的年轻代预留新对象，设置合理的 Survivor 区并且提供 Survivor 区的使用率，可以将年轻对象保存在年轻代。
 
@@ -44,9 +43,11 @@ ZGC、Azul Pauseless GC采用的算法很不一样，尤其是Pauseless GC，其
 为降低应用软件的垃圾回收时的停顿，首先考虑的是使用关注系统停顿的 CMS 回收器，其次，为了减少 Full GC 次数，应尽可能将对象预留在年轻代。
 
 ## system.gc() 的作用是什么？
+
 gc()函数的作用只是提醒虚拟机：程序员希望进行一次垃圾回收。但是它不能保证垃圾回收一定会进行，而且具体什么时候进行是取决于具体的虚拟机的，不同的虚拟机有不同的对策。
 
 ## 强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？
+
 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。
 
 所谓强引用（"Strong" Reference），就是我们最常见的普通对象引用，只要还有强引用指向一个对象，就能表明对象还“活着”，垃圾收集器不会碰这种对象。对于一个普通的对象，如果没有其他的引用关系，只要超过了引用的作用域或者显式地将相应（强）引用赋值为 null，就是可以被垃圾收集的了，当然具体回收时机还是要看垃圾收集策略。
