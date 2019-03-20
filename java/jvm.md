@@ -42,3 +42,36 @@ ZGC、Azul Pauseless GC采用的算法很不一样，尤其是Pauseless GC，其
 
 7. 使用非占有的垃圾回收器
 为降低应用软件的垃圾回收时的停顿，首先考虑的是使用关注系统停顿的 CMS 回收器，其次，为了减少 Full GC 次数，应尽可能将对象预留在年轻代。
+
+## system.gc() 的作用是什么？
+gc()函数的作用只是提醒虚拟机：程序员希望进行一次垃圾回收。但是它不能保证垃圾回收一定会进行，而且具体什么时候进行是取决于具体的虚拟机的，不同的虚拟机有不同的对策。
+
+## 强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？
+不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。
+
+所谓强引用（"Strong" Reference），就是我们最常见的普通对象引用，只要还有强引用指向一个对象，就能表明对象还“活着”，垃圾收集器不会碰这种对象。对于一个普通的对象，如果没有其他的引用关系，只要超过了引用的作用域或者显式地将相应（强）引用赋值为 null，就是可以被垃圾收集的了，当然具体回收时机还是要看垃圾收集策略。
+
+软引用（SoftReference），是一种相对强引用弱化一些的引用，可以让对象豁免一些垃圾收集，只有当 JVM 认为内存不足时，才会去试图回收软引用指向的对象。JVM 会确保在抛出OutOfMemoryError 之前，清理软引用指向的对象。软引用通常用来实现内存敏感的缓存，如果还有空闲内存，就可以暂时保留缓存，当内存不足时清理掉，这样就保证了使用缓存的同时，不会耗尽内存。
+
+SoftReference 在“弱引用WeakReference”中属于最强的引用。SoftReference 所指向的对象，当没有强引用指向它时，会在内存中停留一段的时间，垃圾回收器会根据 JVM 内存的使用情况（内存的紧缺程度）以及 SoftReference 的 get() 方法的调用情况来决定是否对其进行回收。
+
+对于幻象引用（PhantomReference ），有时候也翻译成虚引用，你不能通过它访问对象。幻象引用仅仅是提供了一种确保对象被 finalize 以后，做某些事情的机制，比如，通常用来做所谓的 Post-Mortem 清理机制，如 Java 平台自身 Cleaner 机制等，也有人利用幻象引用监控对象的创建和销毁。
+
+```
+Object counter = new Object();
+ReferenceQueue refQueue = new ReferenceQueue<>();
+PhantomReference<Object> p = new PhantomReference<>(counter, refQueue);
+counter = null;
+System.gc();
+try {
+    // Remove 是一个阻塞方法，可以指定 timeout，或者选择一直阻塞
+    Reference<Object> ref = refQueue.remove(1000L);
+    if (ref != null) {
+        // do something
+    }
+} catch (InterruptedException e) {
+    // Handle it
+}
+```
+
+
