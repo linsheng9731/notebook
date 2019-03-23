@@ -67,6 +67,8 @@
 
 ## system.gc() 的作用是什么？
 
+gc()函数的作用只是提醒虚拟机：程序员希望进行一次垃圾回收。但是它不能保证垃圾回收一定会进行，而且具体什么时候进行是取决于具体的虚拟机的，不同的虚拟机有不同的对策。
+
 ## Parallel GC、CMS GC、ZGC、Azul Pauseless GC最主要的不同是？背后的原理也请简单描述下？
 
 Parallel GC的Young区采用的是Mark-Copy算法，Old区采用的是Mark-Sweep-Compact来实现，Parallel执行，所以决定了Parallel GC在执行YGC、FGC时都会Stop-The-World，但完成GC的速度也会比较快。
