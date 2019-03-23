@@ -1,5 +1,5 @@
 # Scala 的 return
-##return会打破程序结构
+## return会打破程序结构
 scala中有return，语义和其他语言没什么区别，但是最好不要使用它。我们先看一个小例子:
 
 ```
@@ -41,7 +41,7 @@ def foo: Int = {
 ```
 分开看两个sumR的结果分别是1和4，所以相加的结果应该是5。但是实际结果却是1！。所以return打断了程序的运行，会产生意外的结果。
 
-##return的类型
+## return 的类型
 接着往下看另一个例子：
 
 ```
@@ -56,6 +56,6 @@ scala.runtime.NonLocalReturnControl
 ```
 突然冒出一个奇怪的东西，scala.runtime.NonLocalReturnControl。这就要说一说在scala在lambda中的return是如何实现的了。因为对于匿名函数而言return无法达到函数的最外层，所以scala使用了异常机制，scala.runtime.NonLocalReturnControl是继承自NoStackTrace，而NoStackTrace来自Throwable，所以就有了上面的结果。所以在使用for之类的循环结构时，如果恰巧使用了return + lambda，则很有可能会抛出意想不到的异常。
 
-##小结
+## 小结
 基于上面的几个场景，建议在任何情况下不要是用return，这个习惯会保护你避开上面几个奇怪的坑。
 
