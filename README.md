@@ -1,5 +1,3 @@
-## 记录一些技术总结和对工作的思考，持续更新，欢迎各位 star ！🖕🖕🖕
-
 # 目录
 - [java](https://github.com/linsheng9731/notebook/tree/master/java)
   - [基础知识](https://github.com/linsheng9731/notebook/blob/master/java/Basic.md)
