@@ -1,5 +1,7 @@
 # Disruptor 庖丁解牛
-Distruptor 是 LMAX 开源的一个高性能异步事件处理框架。LMAX 是一家期货交易所，交易所的业务可以简单抽象成一个事件队列，买卖双方都是事件的生产者，撮合引擎则是事件的消费者。Disruptor 就是这种背景下的产物。
+Distruptor 是 LMAX 开源的一个高性能异步事件处理框架。LMAX 是一家期货交易所，交易所的业务可以简单抽象成一个事件队列，买卖双方都是事件的生产者，撮合引擎则是事件的消费者。交易所对延迟要求是非常苛刻的，Disruptor 就是为了解决内存队列的延迟问题的产物。基于Disruptor开发的系统单线程能支撑每秒600万订单。
+
+# 核心组件
 ## Ring Buffer
 环形的缓冲区。曾经 RingBuffer 是 Disruptor 中的最主要的对象，但从3.0版本开始，其职责被简化为仅仅负责对通过 Disruptor 进行交换的数据（事件）进行存储和更新。在一些更高级的应用场景中，Ring Buffer 可以由用户的自定义实现来完全替代。Ring Buffer 为什么这么优秀，首先，因为它是数组，所以要比链表快，而且有一个容易预测的访问模式。（注：数组内元素的内存地址的连续性存储的）其次，你可以为数组预先分配内存，使得数组对象一直存在（除非程序终止）。这就意味着不需要花大量的时间用于垃圾回收。此外，不像链表那样，需要为每一个添加到其上面的对象创造节点对象—对应的，当删除节点时，需要执行相应的内存清理操作。
 
@@ -38,26 +40,36 @@ Sequencer 最重要的实现是 MultiProducerSequencer.java:
         {
             // 获取当前可用的 entry 编号
             current = cursor.get();
+				// 获取下一批 entry 的最大编号
             next = current + n;
 
-            // 如果
+				// 假如长度超出数组总长需要截取 获取交叉点
             long wrapPoint = next - bufferSize;
+				// 消费者已经使用过的 entry 最大编号
             long cachedGatingSequence = gatingSequenceCache.get();
 
+				// 如果交叉点大于消费者缓存编号 说明没有足够的空间分配给生产者
+				// 第二个条件是 LMAX 使用 Disruptor 的一种特殊方式 
+				// 详细见：https://github.com/LMAX-Exchange/disruptor/issues/76
             if (wrapPoint > cachedGatingSequence || cachedGatingSequence > current)
             {
+					 // 获取消费者缓存的已经处理过的序号
                 long gatingSequence = Util.getMinimumSequence(gatingSequences, current);
 
+					 // 如果交叉点还是大于消费者编号
                 if (wrapPoint > gatingSequence)
                 {
-                    LockSupport.parkNanos(1); // TODO, should we spin based on the wait strategy?
+						  // next 不可用 继续等待
+                    LockSupport.parkNanos(1);
                     continue;
                 }
-
+					 // 更新消费者编号缓存
                 gatingSequenceCache.set(gatingSequence);
             }
             else if (cursor.compareAndSet(current, next))
             {
+					 // 使用 compareAndSet CAS 操作更新 cursor
+					 // 找到可用的 next 返回结果
                 break;
             }
         }
@@ -263,7 +275,7 @@ private void processEvents()
 
 ![](img/1047231-20170208183601338-912624234.png)
 
-
+# Disruptor 为何能如此之快？
 ## 缓存伪共享(False Sharing)
 数据在缓存中不是以独立的项来存储的，如不是一个单独的变量，也不是一个单独的指针。缓存是由缓存行组成的，通常是64字节（译注：这篇文章发表时常用处理器的缓存行是64字节的，比较旧的处理器缓存行是32字节），并且它有效地引用主内存中的一块地址。一个Java的long类型是8字节，因此在一个缓存行中可以存8个long类型的变量。非常奇妙的是如果你访问一个long数组，当数组中的一个值被加载到缓存中，它会额外加载另外7个。因此你能非常快地遍历这个数组。事实上，你可以非常快速的遍历在连续的内存块中分配的任意数据结构。
 
@@ -278,3 +290,34 @@ public static final long INITIAL_CURSOR_VALUE = Sequence.INITIAL_VALUE;
 protected long p1, p2, p3, p4, p5, p6, p7;
 ```
 因此没有伪共享，就没有和其它任何变量的意外冲突，没有不必要的缓存未命中。
+
+## 使用 Unsafe 操作
+Java 中的 unsafe 类提供了硬件级别的原子操作，主要提供以下功能：
+直接操作内存,通过Unsafe类可以分配内存，可以释放内存。可以定位对象某字段的内存位置，也可以修改对象的字段值，即使它是私有的。各种类型的 CAS 操作。Disruptor 中大量使用 unsafe 的 CAS 操作，比如在 Sequence 中：
+
+```
+    /**
+     * Create a sequence with a specified initial value.
+     *
+     * @param initialValue The initial value for this sequence.
+     */
+    public Sequence(final long initialValue)
+    {
+        UNSAFE.putOrderedLong(this, VALUE_OFFSET, initialValue);
+    }
+
+    /**
+     * Perform an ordered write of this sequence.  The intent is
+     * a Store/Store barrier between this write and any previous
+     * store.
+     *
+     * @param value The new value for the sequence.
+     */
+    public void set(final long value)
+    {
+        UNSAFE.putOrderedLong(this, VALUE_OFFSET, value);
+    }
+```
+# 总结
+通过 RingBuffer、Sequencer 等组件相互配合，Disruptor 实现了一套结构良好的内存无锁队列，同时对一些细节进行了优化，极大提升了事件队列的整体表现。在实际工作中，对于一些延迟要求很高的场景可以考虑使用 Disruptor 来实现，很多框架也采用 Disruptor 来优化性能，比如
+Log4j 2相对于Log4j 1最大的优势在于多线程并发场景下性能更优。该特性源自于Log4j 2的异步模式采用了Disruptor来处理。 
