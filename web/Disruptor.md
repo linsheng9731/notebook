@@ -40,36 +40,35 @@ Sequencer 最重要的实现是 MultiProducerSequencer.java:
         {
             // 获取当前可用的 entry 编号
             current = cursor.get();
-				// 获取下一批 entry 的最大编号
+	    // 获取下一批 entry 的最大编号
             next = current + n;
-
-				// 假如长度超出数组总长需要截取 获取交叉点
+	    // 假如长度超出数组总长需要截取 获取交叉点
             long wrapPoint = next - bufferSize;
-				// 消费者已经使用过的 entry 最大编号
+	    // 消费者已经使用过的 entry 最大编号
             long cachedGatingSequence = gatingSequenceCache.get();
-
-				// 如果交叉点大于消费者缓存编号 说明没有足够的空间分配给生产者
-				// 第二个条件是 LMAX 使用 Disruptor 的一种特殊方式 
-				// 详细见：https://github.com/LMAX-Exchange/disruptor/issues/76
+	    
+	    // 如果交叉点大于消费者缓存编号 说明没有足够的空间分配给生产者
+	    // 第二个条件是 LMAX 使用 Disruptor 的一种特殊方式 
+	    // 详细见：https://github.com/LMAX-Exchange/disruptor/issues/76
             if (wrapPoint > cachedGatingSequence || cachedGatingSequence > current)
             {
-					 // 获取消费者缓存的已经处理过的序号
+	   	// 获取消费者缓存的已经处理过的序号
                 long gatingSequence = Util.getMinimumSequence(gatingSequences, current);
 
-					 // 如果交叉点还是大于消费者编号
+		// 如果交叉点还是大于消费者编号
                 if (wrapPoint > gatingSequence)
                 {
-						  // next 不可用 继续等待
+		    // next 不可用 继续等待
                     LockSupport.parkNanos(1);
                     continue;
                 }
-					 // 更新消费者编号缓存
+		// 更新消费者编号缓存
                 gatingSequenceCache.set(gatingSequence);
             }
             else if (cursor.compareAndSet(current, next))
             {
-					 // 使用 compareAndSet CAS 操作更新 cursor
-					 // 找到可用的 next 返回结果
+		// 使用 compareAndSet CAS 操作更新 cursor
+		// 找到可用的 next 返回结果
                 break;
             }
         }
@@ -105,10 +104,6 @@ Disruptor 定义的事件处理接口，由用户实现，用于处理事件，�
 // 创建 distruptor 实例
 disruptor.handleEventsWith(EventStatusCheckHandler)
       .`then`(MessageTranslateHandler)
-      .`then`(identityRequestHandler)
-      .`then`(MessageIdentityResponseHandler)
-      .`then`(EventRecordsHandler(topicManager))
-      .`then`(eventPublishEvent)
       .`then`(EventStatusWriteHandler)
       .`then`(EventCleanHandler)
     disruptor.setDefaultExceptionHandler(EventExceptionHandler)
@@ -137,7 +132,7 @@ MultiProducerSequencer publish 方法
 public void publish(final long sequence)
 {
     setAvailable(sequence);
-	 // 通过 waitStrategy 通知消费者
+    // 通过 waitStrategy 通知消费者
     waitStrategy.signalAllWhenBlocking();
 }
 ```
@@ -171,8 +166,8 @@ public long waitFor(long sequence, Sequence cursorSequence, Sequence dependentSe
             while (cursorSequence.get() < sequence)
             {
                barrier.checkAlert();
-					 // 持有 condition 等待释放信号 
-                processorNotifyCondition.await();
+	       // 持有 condition 等待释放信号 
+               processorNotifyCondition.await();
             }
         }
         finally
@@ -221,7 +216,7 @@ private void processEvents()
 	{
 		try
 		{
-			   // 调用 ProcessingSequenceBarrier 的 waitFor 方法
+			   	// 调用 ProcessingSequenceBarrier 的 waitFor 方法
 				final long availableSequence = sequenceBarrier.waitFor(nextSequence);
 				if (batchStartAware != null)
 				{
@@ -319,5 +314,4 @@ Java 中的 unsafe 类提供了硬件级别的原子操作，主要提供以下�
     }
 ```
 # 总结
-通过 RingBuffer、Sequencer 等组件相互配合，Disruptor 实现了一套结构良好的内存无锁队列，同时对一些细节进行了优化，极大提升了事件队列的整体表现。在实际工作中，对于一些延迟要求很高的场景可以考虑使用 Disruptor 来实现，很多框架也采用 Disruptor 来优化性能，比如
-Log4j 2相对于Log4j 1最大的优势在于多线程并发场景下性能更优。该特性源自于Log4j 2的异步模式采用了Disruptor来处理。 
+通过 RingBuffer、Sequencer 等组件相互配合，Disruptor 实现了一套结构良好的内存无锁队列，同时对一些细节进行了优化，极大提升了事件队列的整体表现。在实际工作中，对于一些延迟要求很高的场景可以考虑使用 Disruptor 来实现，很多框架也采用 Disruptor 来优化性能，比如 Log4j 2相对于Log4j 1最大的优势在于多线程并发场景下性能更优。该特性源自于Log4j 2的异步模式采用了Disruptor来处理。 
