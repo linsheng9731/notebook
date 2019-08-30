@@ -211,19 +211,40 @@ private void enqueue(E e) {
 
 ThreadLocal 是 Java 提供的一种保存线程私有信息的机制，因为其在整个线程生命周期内有效，所以可以方便地在一个线程关联的不同业务模块之间传递信息，比如事务 ID、Cookie 等上下文相关信息。它的实现结构，可以参考源码，数据存储于线程相关的 ThreadLocalMap，其内部条目是弱引用，如下面片段。
 ```
-static class ThreadLocalMap {
-	static class Entry extends WeakReference<ThreadLocal<?>> {
-    	/** The value associated with this ThreadLocal. */
-    	Object value;
-    	Entry(ThreadLocal<?> k, Object v) {
-        	super(k);
-    	value = v;
-    	}
-      }
-   // …
+
+// 每个线程保存一个 map
+// key 为 threadLocal 的 hashCode value 为存储的值
+ThreadLocalMap getMap(Thread t) {
+     return t.threadLocals;
 }
+
+// ThreadLocal.set
+Entry[] tab = table;
+int len = tab.length;
+int i = key.threadLocalHashCode & (len-1);
+
+// 开放寻址
+for (Entry e = tab[i];
+     e != null;
+     e = tab[i = nextIndex(i, len)]) {
+     ThreadLocal<?> k = e.get();
+
+      if (k == key) {
+             e.value = value;
+             return;
+        }
+
+      if (k == null) {
+            replaceStaleEntry(key, value, i);
+            return;
+        }
+    }
+
+ // ThreadLocal.get 
+ int i = key.threadLocalHashCode & (table.length - 1);
+ Entry e = table[i];
 ```
-通常弱引用都会和引用队列配合清理机制使用，但是 ThreadLocal 是个例外，它并没有这么做。这意味着，废弃项目的回收依赖于显式地触发，否则就要等待线程结束，进而回收相应 ThreadLocalMap！这就是很多 OOM 的来源，所以通常都会建议，应用一定要自己负责 remove，并且不要和线程池配合，因为 worker 线程往往是不会退出的。
+ 为什么 threadLocal 的 key 使用弱引用，因为如果 key 使用强引用：引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。所以 key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。
 
 ## 什么情况下会发生死锁？
 
