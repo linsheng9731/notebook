@@ -1,3 +1,7 @@
 /algorithm/*idea
 /algorithm/algorithm.iml
 /algorithm/out
+/NettyInAction/*.iml
+/NettyInAction/target
+/NettyInAction/target/*
+NettyInAction/.idea
