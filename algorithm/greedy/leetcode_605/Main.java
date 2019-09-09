@@ -2,6 +2,10 @@ package leetcode_605;
 
 import utils.Checker;
 
+/**
+ * https://leetcode.com/problems/can-place-flowers/
+ * 找到连续三个 0 即一个花的位置 在原有的数据的首尾加两个 0
+ */
 public class Main {
 
     public static void main(String[] args) {
@@ -59,12 +63,12 @@ class Solution {
             newLine[i+1] = flowerbed[i];
         }
         for(int i=0; i < newLineLen; i++) {
-            if(newLine[i] == 0) cnt++;
-            if(newLine[i] ==1) cnt = 0;
+            if(newLine[i] == 0) cnt++; // 每次找到一个空位计数加一
+            if(newLine[i] == 1) cnt = 0; // 碰到已经有花的情况清空计数
             if(cnt == 3) {
-                canPlaceCnt++;
-                cnt = 0;
-                i--;
+                canPlaceCnt++; // 找到一个位置
+                cnt = 0; // 重新计数
+                i--; // 回退一位 覆盖 00001 这种情况
             }
         }
         return canPlaceCnt >= n;
