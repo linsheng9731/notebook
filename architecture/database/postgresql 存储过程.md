@@ -44,6 +44,7 @@ quantity numeric(5);
 quantity integer DEFAULT 32;
 url varchar := 'http://mysite.com';
 id_user CONSTANT integer := 10;
+metric:=(select id from push_metrics where project_id=projectId);
 ```
 直接使用变量名使用变量：
 ```
@@ -118,4 +119,22 @@ ELSE
     result := 'NULL';
 END IF;
 ```
+```
+create function update_metric_ref() returns integer as $$
+declare 
+	projectId numeric; -- 定义变量
+	metric numeric;
+begin 
+     -- 循环语句
+     for projectId in select project_id from push_messages where metrics_ref=1 loop 
+          -- 查询结果赋值
+          metric:=(select id from push_metrics where project_id=projectId);
+          -- 更新引用变量
+          update push_messages set metrics_ref=metric where metrics_ref=1 ;
+     end loop;
+     return 1;
+end;
 
+$$ language plpgsql;
+
+```

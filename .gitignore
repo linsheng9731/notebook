@@ -5,3 +5,10 @@
 /NettyInAction/target
 /NettyInAction/target/*
 NettyInAction/.idea
+*.iml
+*/target
+*/.idea
+.vscode/
+/big data/flink/target
+/big data/flink/.idea
+

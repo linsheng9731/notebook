@@ -1,0 +1,8 @@
+#Successful Tests
+#Fri Dec 06 17:26:09 CST 2019
+io.akka.learn.AkkaPropsSpec=1575379262719
+io.akka.learn.AkkaMailboxSpec=1575379262719
+io.akka.learn.AkkaHotSwapSpec=1575602843419
+io.akka.learn.AkkaEventBusSpec=1575379262718
+io.akka.learn.AkkaPatternsSpec=1575427119188
+io.akka.learn.AkkaExtensionSpec=1575624369699
