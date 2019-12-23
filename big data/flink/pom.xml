@@ -10,7 +10,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <flink.version>1.6-GIO</flink.version>
+        <flink.version>1.7.2</flink.version>
         <package.id>assembly</package.id>
         <scope.setting>provided</scope.setting>
         <scala.version>2.11.12</scala.version>
@@ -120,19 +120,17 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.flink</groupId>
-            <artifactId>flink-test-utils-junit</artifactId>
-        </dependency>
 
     </dependencies>
 
@@ -157,23 +155,6 @@
             </plugins>
         </pluginManagement>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>dependency-convergence</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <skip>true</skip>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 
 

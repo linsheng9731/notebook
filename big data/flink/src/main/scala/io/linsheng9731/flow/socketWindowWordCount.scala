@@ -1,3 +1,5 @@
+package io.linsheng9731.flow
+
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
@@ -21,7 +23,7 @@ object SocketWindowWordCount {
     val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
 
     // get input data by connecting to the socket
-    val text = env.socketTextStream("127.0.0.1", port, '\n')
+    val text = env.socketTextStream("localhost", port, '\n')
 
     // parse the data, group it, window it, and aggregate the counts
     val windowCounts = text
