@@ -8,6 +8,7 @@
   - [greedy](https://github.com/linsheng9731/notebook/tree/master/greedy)
 - [machine_learning](https://github.com/linsheng9731/notebook/tree/master/machine_learning)
 - [tech_management](https://github.com/linsheng9731/notebook/tree/master/tech_management)
+- [dev_ops](https://github.com/linsheng9731/notebook/tree/master/dev_ops)
 - [backend](https://github.com/linsheng9731/notebook/tree/master/backend)
   - [database](https://github.com/linsheng9731/notebook/tree/master/database)
   - [tools](https://github.com/linsheng9731/notebook/tree/master/tools)
