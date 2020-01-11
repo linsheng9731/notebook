@@ -1,4 +1,5 @@
 /algorithm/*idea
+target/
 .metals
 /algorithm/algorithm.iml
 /algorithm/out
@@ -12,9 +13,11 @@ NettyInAction/.idea
 .vscode/
 /big data/flink/target
 /big data/flink/.idea
+/leetcode/out/*
 
 big data/flink/.classpath
 big data/flink/.project
 big data/flink/.settings/org.eclipse.jdt.core.prefs
 big data/flink/.settings/org.eclipse.jdt.apt.core.prefs
 big data/flink/.settings/org.eclipse.m2e.core.prefs
+NettyInAction/
