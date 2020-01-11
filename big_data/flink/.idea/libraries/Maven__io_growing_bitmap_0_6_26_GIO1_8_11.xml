@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: io.growing:bitmap:0.6.26-GIO1.8.11">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/growing/bitmap/0.6.26-GIO1.8.11/bitmap-0.6.26-GIO1.8.11.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/io/growing/bitmap/0.6.26-GIO1.8.11/bitmap-0.6.26-GIO1.8.11-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/growing/bitmap/0.6.26-GIO1.8.11/bitmap-0.6.26-GIO1.8.11-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

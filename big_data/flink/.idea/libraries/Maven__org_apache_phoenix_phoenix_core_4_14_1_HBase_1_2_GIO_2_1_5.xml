@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.phoenix:phoenix-core:4.14.1-HBase-1.2-GIO-2.1.5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/phoenix/phoenix-core/4.14.1-HBase-1.2-GIO-2.1.5/phoenix-core-4.14.1-HBase-1.2-GIO-2.1.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/phoenix/phoenix-core/4.14.1-HBase-1.2-GIO-2.1.5/phoenix-core-4.14.1-HBase-1.2-GIO-2.1.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/phoenix/phoenix-core/4.14.1-HBase-1.2-GIO-2.1.5/phoenix-core-4.14.1-HBase-1.2-GIO-2.1.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
