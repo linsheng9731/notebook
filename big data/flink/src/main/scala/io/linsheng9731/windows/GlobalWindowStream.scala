@@ -1,9 +1,8 @@
-package io.linsheng9731.flow
+package io.linsheng9731.windows
 
 import io.linsheng9731.triggers.AllWindowTrigger
-import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
+import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 import org.apache.flink.streaming.api.windowing.assigners.GlobalWindows
-import org.apache.flink.streaming.api.scala._
 /**
   * GlobalWindowStream
   *

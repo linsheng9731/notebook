@@ -1,4 +1,4 @@
-package io.linsheng9731.flow
+package io.linsheng9731.connectors
 
 import org.apache.flink.streaming.api.datastream.DataStreamUtils
 import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}

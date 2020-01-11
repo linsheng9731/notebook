@@ -13,9 +13,10 @@ import org.apache.flink.util.Collector
 class MyProcessor extends ProcessWindowFunction[(Int, Int), Int, Int, GlobalWindow ] {
 
   override def process(key: Int, context: Context, elements: Iterable[(Int, Int)], out: Collector[Int]): Unit = {
-    println(key)
-    println(elements)
-    elements.count(_._2 > 0)
+    if(key == 1) {
+      println(elements)
+      out.collect(elements.count(_._2 > 0))
+    }
   }
 
 }

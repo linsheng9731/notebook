@@ -1,4 +1,4 @@
-package io.linsheng9731.flow
+package io.linsheng9731.connectors
 
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment

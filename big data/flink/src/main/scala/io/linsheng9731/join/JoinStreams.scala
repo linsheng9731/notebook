@@ -1,19 +1,18 @@
-package io.linsheng9731.flow
+package io.linsheng9731.join
 
 import org.apache.flink.streaming.api.functions.co.ProcessJoinFunction
-import org.apache.flink.streaming.api.scala._
+import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
+import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
-import org.apache.flink.streaming.api.scala.StreamExecutionEnvironment
-import org.apache.flink.streaming.api.windowing.assigners.{GlobalWindows, TumblingEventTimeWindows}
 import org.apache.flink.util.Collector
 
 /**
-  * StreamOperators
+  * JoinStreams
   *
   * @author damon lin
   *         2019/12/18
   */
-object StreamOperators {
+object JoinStreams {
 
   def main(args: Array[String]): Unit = {
 
