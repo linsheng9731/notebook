@@ -10,15 +10,18 @@ def fileTree(dir, depth):
     for entry in entries:
         name = entry.name
         if (name not in ignoreList) and (entry.is_dir() and not name.startswith('.')):
-            output.append(render(depth, entry.name))
+            output.append(render(depth, entry.name, dir))
         if entry.is_dir() and (not name.startswith('.')):
             fileTree(entry, depth+1)
 
 def tab(depth):
     return '  ' * depth; 
 
-def render(depth, name):
-    return tab(depth) + "- [{}](https://github.com/linsheng9731/notebook/tree/master/{})".format(name, name)
+def render(depth, name, dir):
+    if depth > 0:
+        return tab(depth) + "- [{}](https://github.com/linsheng9731/notebook/tree/master/{}/{})".format(name, dir.name, name)
+    else:
+        return tab(depth) + "- [{}](https://github.com/linsheng9731/notebook/tree/master/{})".format(name, name)
 
 fileTree('./', 0)
 fo = open("README.md", "w")
