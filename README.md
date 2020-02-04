@@ -24,3 +24,4 @@
   - [flink](https://github.com/linsheng9731/notebook/tree/master/big_data/flink)
   - [spark](https://github.com/linsheng9731/notebook/tree/master/big_data/spark)
 - [growth_hacker](https://github.com/linsheng9731/notebook/tree/master/growth_hacker)
+  - [湖畔大学](https://github.com/linsheng9731/notebook/tree/master/growth_hacker/湖畔大学)
