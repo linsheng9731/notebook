@@ -13,6 +13,7 @@
   - [database](https://github.com/linsheng9731/notebook/tree/master/backend/database)
   - [tools](https://github.com/linsheng9731/notebook/tree/master/backend/tools)
   - [cache](https://github.com/linsheng9731/notebook/tree/master/backend/cache)
+  - [grpc](https://github.com/linsheng9731/notebook/tree/master/backend/grpc)
   - [guice](https://github.com/linsheng9731/notebook/tree/master/backend/guice)
   - [java](https://github.com/linsheng9731/notebook/tree/master/backend/java)
   - [programming_paradigm](https://github.com/linsheng9731/notebook/tree/master/backend/programming_paradigm)
