@@ -18,6 +18,7 @@
   - [java](https://github.com/linsheng9731/notebook/tree/master/backend/java)
   - [programming_paradigm](https://github.com/linsheng9731/notebook/tree/master/backend/programming_paradigm)
   - [scala](https://github.com/linsheng9731/notebook/tree/master/backend/scala)
+  - [graphql](https://github.com/linsheng9731/notebook/tree/master/backend/graphql)
   - [akka](https://github.com/linsheng9731/notebook/tree/master/backend/akka)
   - [NettyInAction](https://github.com/linsheng9731/notebook/tree/master/backend/NettyInAction)
   - [mq](https://github.com/linsheng9731/notebook/tree/master/backend/mq)
