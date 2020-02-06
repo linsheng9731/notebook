@@ -74,3 +74,5 @@ backend/grpc/examples/.idea/libraries/Maven__org_mockito_mockito_core_2_28_2.xml
 backend/grpc/examples/.idea/libraries/Maven__org_objenesis_objenesis_2_6.xml
 backend/grpc/examples/gradle/wrapper/gradle-wrapper.jar
 backend/grpc/examples/gradle/wrapper/gradle-wrapper.properties
+backend/grpc/examples/.settings/org.eclipse.buildship.core.prefs
+backend/grpc/examples/.settings/org.eclipse.jdt.core.prefs
