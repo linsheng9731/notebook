@@ -82,7 +82,7 @@ Sequencer 最重要的实现是 MultiProducerSequencer.java:
 ## Sequence Barrier
 消费者通过 SequenceBarrier 读取数据。RingBuffer 的元素的大小是2的n次方（下图中 ringBufferSize 为8，从序号0开始）。消费者通过访问 ProcessingSequenceBarrier 对象和 RingBuffer 进行交互。消费者也需要知道它将要处理的序号，每个消费者都需要找到下一个它要访问的序号。在下面的例子中，消费者处理完了 RingBuffer里序号8之前（包括8）的所有数据，那么它期待访问的下一个序号是9。
 
-![](img/20160904005456_25007.png)
+![](20160904005456_25007.png)
 
 ## Wait Strategy
 定义 Consumer 如何进行等待下一个事件的策略。 （注：Disruptor 定义了多种不同的策略，针对不同的场景，提供了不一样的性能表现）
@@ -264,11 +264,11 @@ private void processEvents()
 生产者：Producer -> RingBuffer.publishEvent() -> Sequencer.next() 获取下一个可用的 cursor -> RingBuffer.translateAndPublish() -> Sequencer.publish() -> WaitStrategy.signalAllWhenBlocking() 通知消费者进行事件消费
 
 下图是 LMAX paper 里提供的 UML 图：
-![](img/20190416-101727.jpg)
+![](20190416-101727.jpg)
 
 另外如下图所示， SequenceBarrier 除了检测 RingBuffer 的 cursor 之外还可以检测其他 Consumer 的序号 Sequence，从而将最小的序号返回给消费者，由此实现了依赖的逻辑。
 
-![](img/1047231-20170208183601338-912624234.png)
+![](1047231-20170208183601338-912624234.png)
 
 # Disruptor 为何能如此之快？
 ## 缓存伪共享(False Sharing)
