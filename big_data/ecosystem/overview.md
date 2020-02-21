@@ -79,7 +79,32 @@ Carbon data 有争议的地方在于使用了 全局字典 来进行压缩和 gr
 
 
 ### Hbase
+Hbase 由 master 和 region server 组成，master 只管理 region server，这点 和 hdfs 中 name node 不同，所以压力比较小。Hbase 外部依赖 zk，主要用于管理 hbase 的 root 表地址（记录 region-region server 对应关系）。
 
+![](2020-02-21-15-04-08.png)
+
+写入流程
+客户端的请求会被 region server 转发到具体的 region。每个 region 中都会有一个内存 memstore ，数据会先被写入到 memstore 然后直接返回了，所以响应比较快。
+
+这里有一个 WAL（write ahead log）机制保证 hbase 在写入 memstore 前会先将操作落到 HLog 中（由 region server 保存）
+
+当 memstore 中的数据或者整个 region server 的数据达到阈值会触发刷写，因为数据是排过序所以效率较高。所有 hbase 的更新操作都是追加写，避免随机 IO。
+
+![](2020-02-21-15-10-23.png)
+
+读取流程
+Client 先从 region 的 memstore 中读取，未命中则读取 region server 的 block cache，最后读取 hdfs 磁盘文件。
+![](2020-02-21-15-32-46.png)
+
+优点：
+- 能支持海量数据存储，扩展性能好，写入以及查询性能好。
+- 列式存储，列可以动态增加，存储灵活。
+
+缺点：
+- 系统复杂，架构在 hdfs 之上，外部依赖 zk。
+- 只支持 rowkey 索引，原生不支持 sql 复杂查询（需要引入其他组件）。对 rowkey 设计要求高（需要避免热点数据问题）
+- 没有事务，不能用于 OLTP 场景。
+- 数据分 region 存储不适合大范围扫描数据（可能会横跨多个 region）。
 
 ## 计算
 ### MapReduce
