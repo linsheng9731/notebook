@@ -55,8 +55,41 @@ HDFS 是 hadoop 中的分布式文件系统。HDFS 由 NameNode、SecondaryNameN
 
 ### Parquet
 
-### CarbonData
 
+### CarbonData
+华为研发的列存储格式，类似 parquet。目标是使用一份数据满足多种分析场景，比如单表快速过滤，OLAP 交互式查询。
+![](2020-02-21-09-59-09.png)
+
+特点：
+- 支持海量数据扫描并取特定几列（秒级）
+- 支持海量数据 OLAP 查询，多维过滤。（几秒内）
+- 支持整行获取（几秒）
+- 支持 HDFS 对接 Hadoop 生态
+
+和 parquet 相比，carbon data 牺牲了压缩率和入库速度，通过构建 HDFS 文件 block 和 carbon data 实际存储 Blocklet 的二级索引加速查询速度。Spark SQL 可以通过 block 索引避免 95% 以上的 spark task，而 Blocklet 内部索引能减少磁盘 IO。
+![](2020-02-21-10-09-56.png)
+
+下图完整的展现了一次过滤查询的流程，这个过程在二级索引的作用之下，规避了大量非必要的查询交互，由此带来的性能优化是十分明显的。
+![](2020-02-21-10-16-26.png)
+
+Carbon data 有争议的地方在于使用了 全局字典 来进行压缩和 group by 查询优化。全局字典即通过数字来替换表格中重复出现的内容，这样可以大大减少数据量。但是在入库时候需要构建全局字典，会极大拖慢入库速度。
+![](2020-02-21-10-19-57.png)
+
+### Kudu
+
+
+### Hbase
+
+
+## 计算
+### MapReduce
+
+### Spark
+
+### Flink
+
+
+## 查询
 ### Hive
 Hive 是构建在 hadoop 上的数据仓库。底层数据存储在 hdfs 上，对外提供 HQL 语言查询。Hive 的本质是将 HQL 转化为 MapReduce 任务去运行。
 
@@ -74,19 +107,7 @@ hive 的优点：
 - 不支持事务
 
 Hive 中的表只是逻辑表的声明，即表的元数据。Hive 本身不存储数据，底层依赖于 hdfs 和 MapReduce 之上。Hive 中的表操作换被翻译为 MapReduce 操作，这样就能将逻辑表映射为数据库表。因为依赖 MapReduce 操作，所以 hive 是以行来处理数据的，不适合随机海量数据访问，只适合处理海量数据联机分析（OLAP）场景。
-
-### Kudu
-
-### Hbase
-
-## 计算
-### MapReduce
-
-### Spark
-
-### Flink
-
-## 查询
+### Spark SQL
 
 ### Phoenix
 
