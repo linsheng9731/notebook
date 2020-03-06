@@ -123,3 +123,6 @@ backend/grpc/examples/bin/test/io/grpc/examples/helloworld/HelloWorldServerTest.
 backend/grpc/examples/bin/test/io/grpc/examples/routeguide/RouteGuideClientTest.class
 backend/grpc/examples/bin/test/io/grpc/examples/routeguide/RouteGuideClientTest$1.class
 backend/grpc/examples/bin/test/io/grpc/examples/routeguide/RouteGuideServerTest.class
+big_data/flink/.idea/workspace.xml
+big_data/flink/.idea/libraries/Maven__org_apache_flink_flink_cep_2_11_1_7_2.xml
+big_data/flink/.idea/libraries/Maven__org_apache_flink_flink_cep_scala_2_11_1_7_2.xml
