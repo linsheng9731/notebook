@@ -30,6 +30,7 @@
   - [flink](https://github.com/linsheng9731/notebook/tree/master/big_data/flink)
   - [hadoop](https://github.com/linsheng9731/notebook/tree/master/big_data/hadoop)
   - [model](https://github.com/linsheng9731/notebook/tree/master/big_data/model)
+  - [flink_learning](https://github.com/linsheng9731/notebook/tree/master/big_data/flink_learning)
   - [hbase](https://github.com/linsheng9731/notebook/tree/master/big_data/hbase)
   - [spark](https://github.com/linsheng9731/notebook/tree/master/big_data/spark)
   - [sql](https://github.com/linsheng9731/notebook/tree/master/big_data/sql)
