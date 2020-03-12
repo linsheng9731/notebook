@@ -1,4 +1,5 @@
-# Flink CEP 源码分析
+# Flink 源码分析 - CEP 模块
+> 本文基于 flink 1.8 commit: 6cbc9bf2cd6142c34074deaec56bb339d30b3b93
 # CEP 基本实现原理
 CEP基本实现原理是模式匹配，过程就是状态转换的过程，每个状态(state)可以理解成由Pattern构成，为了从当前的状态转换成下一个状态，用户可以在Pattern上指定条件，用于状态的过滤和转换。首先需要用户创建定义一个个pattern，然后通过链表将由前后逻辑关系的pattern串在一起，构成模式匹配的逻辑表达。CEP 使用 NFACompiler 创建出NFA(非确定有限自动机)对象，NFA包含了该次模式匹配的各个状态和状态间转换的表达式。整个示意图就像如下：
 ![](2020-03-11-15-06-49.png)
@@ -343,6 +344,3 @@ NFA.createDecisionGraph--匹配事件和用户过滤条件-->NFA.checkFilterCond
 computeNextStates-internal(NFA.computeNextStates)--更新sharedBuffer-->sharedBufferAccessor.put--更新computationStates-->NFA.addComputationState;
 
 ```
-
-## didi 的优化
-![](2020-03-06-20-05-57.png)
