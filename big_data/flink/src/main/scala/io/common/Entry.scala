@@ -27,6 +27,8 @@ object Entry {
   // 输入源
   val dataStream = env.addSource(new EventTimeSourceFunction[Integer](data))
 
+  val keyedStream = dataStream.keyBy(v => v)
+
   // 当 watermark 大于当前所有元素的 timestamp 触发计算
   val reduceDataStream = dataStream
     .keyBy(new TestKeySelector()) // 1,1,1,1 3,3
