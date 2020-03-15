@@ -5,6 +5,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows
 import org.apache.flink.streaming.api.windowing.time.Time
 import util.TestKeySelector
+import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
 
 /**
@@ -13,7 +14,7 @@ import org.apache.flink.streaming.api.scala.{StreamExecutionEnvironment, _}
   * @author damon lin
   *         2020/3/5
   */
-object Entry {
+object StreamHelper {
 
   // get the execution environment
   val env: StreamExecutionEnvironment = StreamExecutionEnvironment.getExecutionEnvironment
