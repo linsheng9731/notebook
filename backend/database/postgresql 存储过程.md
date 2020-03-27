@@ -120,10 +120,12 @@ ELSE
 END IF;
 ```
 ```
+drop function update_metric_ref();
 create function update_metric_ref() returns integer as $$
 declare 
 	projectId numeric; -- 定义变量
 	metric numeric;
+    product RECORD;
 begin 
      -- 循环语句
      for projectId in select project_id from push_messages where metrics_ref=1 loop 
@@ -131,6 +133,31 @@ begin
           metric:=(select id from push_metrics where project_id=projectId);
           -- 更新引用变量
           update push_messages set metrics_ref=metric where metrics_ref=1 ;
+     end loop;
+     return 1;
+end;
+
+$$ language plpgsql;
+
+```
+
+
+```
+create function update_campaign_schemas() returns integer as $$
+declare 
+    product_id integer[]; -- 定义变量
+    c_id numeric;
+    ss character varying[];
+    campaign RECORD;
+begin 
+     -- 循环语句
+     for campaign in select * from message_campaigns where is_often=true loop 
+     	  product_id:=campaign.product_ids;
+     	  c_id:=campaign.id;
+          -- 查询结果赋值
+          ss:=(select ARRAY_AGG(url_schema) from products where id in (select * from unnest(product_id)) )::character varying[];
+          -- 更新引用变量
+          update message_campaigns set schemas=ss where id=c_id ;
      end loop;
      return 1;
 end;
