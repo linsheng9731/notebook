@@ -50,7 +50,7 @@ object EventPattern {
     }
     val pattern2 = Pattern.begin[Event]("end", skipStrategy)
     for(e <- flow.notFinishEvents) {
-      pattern2.where{ pe =>
+      pattern2.where { pe =>
         check(e, pe)
       }
     }

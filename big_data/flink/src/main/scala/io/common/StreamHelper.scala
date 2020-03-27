@@ -27,8 +27,10 @@ object StreamHelper {
   val data = Seq(new Integer(1),new Integer(1), new Integer(1), new Integer(1), new Integer(3), new Integer(3), new Integer(4))
   // 输入源
   val dataStream = env.addSource(new EventTimeSourceFunction[Integer](data))
+  val dataWindowStream = dataStream.windowAll(TumblingEventTimeWindows.of(Time.milliseconds(1)))
 
   val keyedStream = dataStream.keyBy(v => v)
+  val keyedWindowStream = dataStream.keyBy(v => v).window(TumblingEventTimeWindows.of(Time.milliseconds(1)))
 
   // 当 watermark 大于当前所有元素的 timestamp 触发计算
   val reduceDataStream = dataStream
