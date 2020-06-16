@@ -1,0 +1,1 @@
+./bin/kafka-console-consumer.sh  --bootstrap-server 10.1.1.232:9092,10.1.1.176:9092,10.1.1.105:9092  --group flow-cep-test --topic vds-api-custom-action

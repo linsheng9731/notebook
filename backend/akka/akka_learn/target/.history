@@ -9,3 +9,14 @@ testOnly AkkaPatternsSpec
 testOnly AkkaMailboxSpec
 testOnly *AkkaMailboxSpec
 exit
+;set _root_.scala.collection.Seq(shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/private/var/folders/7y/bxrfksg51wjd0nw35pz926y40000gn/T/sbt-structure2.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/Users/damon/Library/Application Support/IntelliJIdea2017.3/Scala/launcher/sbt-structure-1.0.jar" org.jetbrains.sbt.CreateTasks;*/*:dumpStructure
+exit
+;set _root_.scala.collection.Seq(shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/private/var/folders/7y/bxrfksg51wjd0nw35pz926y40000gn/T/sbt-structure2.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/Users/damon/Library/Application Support/IntelliJIdea2017.3/Scala/launcher/sbt-structure-1.0.jar" org.jetbrains.sbt.CreateTasks;*/*:dumpStructure
+exit
+;set _root_.scala.collection.Seq(shellPrompt := { _ => "" },SettingKey[_root_.scala.Option[_root_.sbt.File]]("sbtStructureOutputFile") in _root_.sbt.Global := _root_.scala.Some(_root_.sbt.file("/private/var/folders/7y/bxrfksg51wjd0nw35pz926y40000gn/T/sbt-structure2.xml")),SettingKey[_root_.java.lang.String]("sbtStructureOptions") in _root_.sbt.Global := "download, resolveClassifiers");apply -cp "/Users/damon/Library/Application Support/IntelliJIdea2017.3/Scala/launcher/sbt-structure-1.0.jar" org.jetbrains.sbt.CreateTasks;*/*:dumpStructure
+exit
+ls
+run io.akka.learn.stream.graphs.BroadcastTweets
+all {file:/Users/damon/Documents/WorkSpace/Open-Source/notebook/backend/akka/akka_learn/}akka_learn/products {file:/Users/damon/Documents/WorkSpace/Open-Source/notebook/backend/akka/akka_learn/}akka_learn/test:products
+run
+all {file:/Users/damon/Documents/WorkSpace/Open-Source/notebook/backend/akka/akka_learn/}akka_learn/products {file:/Users/damon/Documents/WorkSpace/Open-Source/notebook/backend/akka/akka_learn/}akka_learn/test:products

@@ -9,16 +9,16 @@
 		extra-sbtVersion="1.0"
 		conf="scala-tool"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20191203205811"/>
+		date="20200601141214"/>
 	<dependencies>
 		<module organisation="org.scala-lang" name="scala-compiler">
-			<revision name="2.12.6" status="release" pubdate="20180726170843" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, optional, optional(default), master" position="0">
+			<revision name="2.12.6" status="release" pubdate="20180427231738" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, optional, optional(default), master" position="0">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="3089" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.12.6.xml" searched="false" origin-is-local="false" origin-location="http://maven.aliyun.com/nexus/content/groups/public/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.pom"/>
+				<metadata-artifact status="no" details="" size="3089" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.12.6.xml" searched="false" origin-is-local="false" origin-location="https://repo.huaweicloud.com/repository/maven/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.pom"/>
 				<caller organisation="default" name="akka_learn-build" conf="scala-tool" rev="2.12.6" rev-constraint-default="2.12.6" rev-constraint-dynamic="2.12.6" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
 					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="10412704" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.12.6.jar">
-						<origin-location is-local="false" location="http://maven.aliyun.com/nexus/content/groups/public/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
+						<origin-location is-local="false" location="https://repo.huaweicloud.com/repository/maven/org/scala-lang/scala-compiler/2.12.6/scala-compiler-2.12.6.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>
@@ -48,13 +48,13 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-reflect">
-			<revision name="2.12.6" status="release" pubdate="20180725175428" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="2">
+			<revision name="2.12.6" status="release" pubdate="20200219160653" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.6/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="2">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="no" details="" size="2825" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.12.6.xml" searched="false" origin-is-local="false" origin-location="http://maven.aliyun.com/nexus/content/groups/public/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.pom"/>
+				<metadata-artifact status="no" details="" size="2825" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.12.6.xml" searched="false" origin-is-local="true" origin-location="/Users/damon/.m2/repository/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.pom"/>
 				<caller organisation="org.scala-lang" name="scala-compiler" conf="default, compile, runtime, optional, master" rev="2.12.6" rev-constraint-default="2.12.6" rev-constraint-dynamic="2.12.6" callerrev="2.12.6"/>
 				<artifacts>
 					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3607442" time="0" location="/Users/damon/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.12.6.jar">
-						<origin-location is-local="false" location="http://maven.aliyun.com/nexus/content/groups/public/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
+						<origin-location is-local="false" location="https://repo.huaweicloud.com/repository/maven/org/scala-lang/scala-reflect/2.12.6/scala-reflect-2.12.6.jar"/>
 					</artifact>
 				</artifacts>
 			</revision>

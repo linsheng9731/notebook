@@ -1,2 +1,4 @@
-[0m[[0m[33mwarn[0m] [0m[0mthere was one deprecation warning (since 2.13.0); re-run with -deprecation for details[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/damon/Documents/WorkSpace/Open-Source/notebook/backend/akka/akka_learn/src/main/scala/io/akka/learn/stream/cookbook/Attributes.scala:22:15: could not find implicit value for parameter materializer: akka.stream.Materializer[0m
+[0m[[0m[31merror[0m] [0m[0m      .runWith(Sink.ignore())[0m
+[0m[[0m[31merror[0m] [0m[0m              ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

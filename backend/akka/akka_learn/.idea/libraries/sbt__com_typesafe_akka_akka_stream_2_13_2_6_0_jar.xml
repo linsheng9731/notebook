@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="sbt: com.typesafe.akka:akka-stream_2.13:2.6.0:jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.typesafe.akka/akka-stream_2.13/jars/akka-stream_2.13-2.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ivy2/cache/com.typesafe.akka/akka-stream_2.13/srcs/akka-stream_2.13-2.6.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

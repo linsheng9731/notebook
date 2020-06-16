@@ -4,7 +4,7 @@
 		module="akka_learn-build"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
-		publication="20191203205811"
+		publication="20200601141214"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>
