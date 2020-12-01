@@ -12,7 +12,7 @@
 
 两种 router actor 类型：
 - Pool - router 创建子 actor 作为 routees。router 会监控子 actor，当子 actor 终止的时候移除 routees。
-- Group - routee actor 从外部创建，router 通过 actor 选择器发送消息到目标 actor，router 不监控 routees。
+- Group - routee actor 从外部，router 通过 actor 选择器发送消息到目标 actor，router 不监控 routees。
 
 ## 监管
 因为 pool 模式的 routees 是 router 的子 actor，所以 router 默认是 routees 的监督者。默认的监督策略是”always escalate“ 即向上抛出错误。可以通过 supervisorStrategy 属性配置监督策略。

@@ -20,64 +20,8 @@ Flink runtime 主要由两部分组成：
 ## 任务提交流程
 Flink 集群的入口在 ClusterEntrypoint 抽象类中类，根据不同的集群模式又分 SessionClusterEntrypoint（session 模式） 和 JobClusterEntrypoint（job 模式）具体实现。同时每种模式又根据不同的 Deploy 模式分为 Yarn、Mesos、Standlon 具体实现。继承关系如下：
 ![](2020-03-31-19-06-43.png)
-集群启动代码在 ClusterEntrypoint 的 runCluster 方法中：
-```
-private void runCluster(Configuration configuration) throws Exception {
-		synchronized (lock) {
-			// 初始化 rpc 服务、ha 服务、metric 服务
-			initializeServices(configuration);
-
-			final DispatcherResourceManagerComponentFactory<?> dispatcherResourceManagerComponentFactory = createDispatcherResourceManagerComponentFactory(configuration);
-            // 初始化 dispatcher、resourceManager 服务、rpc 监听服务
-			clusterComponent = dispatcherResourceManagerComponentFactory.create(
-				configuration,
-				commonRpcService,
-				haServices,
-				blobServer,
-				heartbeatServices,
-				metricRegistry,
-				archivedExecutionGraphStore,
-				new RpcMetricQueryServiceRetriever(metricRegistry.getMetricQueryServiceRpcService()),
-				this);
-		}
-	}
-```
-在创建 clusterComponent 的过程中 restEndpointFactory 会初始化基于 netty 的 REST 服务。具体任务处理客户端任务提交的代码在 JobSubmitHandler 的 handleRequest 中：
-```
-// 处理客户端提交的任务
-@Override
-protected CompletableFuture<JobSubmitResponseBody> handleRequest(@Nonnull HandlerRequest<JobSubmitRequestBody, EmptyMessageParameters> request, @Nonnull DispatcherGateway gateway) throws RestHandlerException {
-	    // 获取提交的 jar
-		final Collection<File> uploadedFiles = request.getUploadedFiles();
-		final Map<String, Path> nameToFile = uploadedFiles.stream().collect(Collectors.toMap(
-			File::getName,
-			Path::fromLocalFile
-		));
-
-		final JobSubmitRequestBody requestBody = request.getRequestBody();
-        // 获取 JobGraph
-		CompletableFuture<JobGraph> jobGraphFuture = loadJobGraph(requestBody, nameToFile);
-
-		// 获取 jar 文件路径
-		Collection<Path> jarFiles = getJarFilesToUpload(requestBody.jarFileNames, nameToFile);
-
-		Collection<Tuple2<String, Path>> artifacts = getArtifactFilesToUpload(requestBody.artifactFileNames, nameToFile);
-        // 上传 jar 文件到 blob service 并关联到 JobGraph 中
-		CompletableFuture<JobGraph> finalizedJobGraphFuture = uploadJobGraphFiles(gateway, jobGraphFuture, jarFiles, artifacts, configuration);
-
-		// 提交 JobGraph 给 dispatcher
-		CompletableFuture<Acknowledge> jobSubmissionFuture = finalizedJobGraphFuture.thenCompose(jobGraph -> gateway.submitJob(jobGraph, timeout));
-
-		return jobSubmissionFuture.thenCombine(jobGraphFuture,
-			(ack, jobGraph) -> new JobSubmitResponseBody("/jobs/" + jobGraph.getJobID()));
-}
-```
-Dispatcher 在收到 JobGraph 后会生成一个 JobManagerRunner。JobManagerRunner 包含一个 LeaderElectionService，主要负责会 Job 层级的节点的选举过程。ZooKeeperLeaderElectionService 是基于 ZK 的 LeaderElectionService 实现，当监听到 zk 的节点发生状态变化，会触发 LeaderLatch 的 handleStateChange 方法。如果当前节点成功注册为 leader 节点，JobManagerRunner 会调用 startJobMaster 方法启动 JobMaster 实例。
-
-JobMaster 启动后会异步启动整个 Job 
 
 
-![](2020-04-06-15-07-35.png)
 
 ```
 client - rpc -> JobSubmitHandler.handleRequest
@@ -85,8 +29,7 @@ client - rpc -> JobSubmitHandler.handleRequest
                     -> JobManagerRunner.start 
 
                         -> LeaderElectionService.start(this) -> LeaderLatch.start() -> LeaderLatch.internalStart -> LeaderLatch.listener.stateChanged -> LeaderLatch.handleStateChange -> LeaderLatch.setLeadership -> LeaderLatchListener.isLeader
-
-                        -> JobManagerRunner.grantLeadership -> verifyJobSchedulingStatusAndStartJobManager -> startJobMaster
+~               -> JobManagerRunner.grantLeadership -> verifyJobSchedulingStatusAndStartJobManager -> startJobMaster
 
                             -> JobMaster.start -> startJobExecution -> resetAndScheduleExecutionGraph -> scheduleExecutionGraph 
                                 -> ExecutionGraph.scheduleForExecution -> scheduleEager
