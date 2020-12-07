@@ -7,45 +7,51 @@ package test;
  * 2020/11/26
  */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int a = in.nextInt();
-        int ans = new Solution().nextInt(a);
-        System.out.println(ans);
+        //Scanner in = new Scanner(System.in);
+        //int a = in.nextInt();
+        //System.out.println(a);
+
+        System.out.println(new Solution().multiply("12", "2"));
+        // System.out.println("Hello World!");
     }
-
-
 }
 
 class Solution {
 
-    public int nextInt(int a) {
-        List<Integer> nums = new ArrayList<>();
-        while(a>10) {
-            nums.add(a%10);
-            a/=10;
+    public String multiply(String num1, String num2) {
+        if(num1.equals("0") || num2.equals("0")) {
+            return "0";
         }
-        for (int i = nums.size(); i > 1; i--) {
-            if(nums.get(i) > nums.get(i-1)) {
-                int tmp = nums.get(i);
-                nums.set(i, nums.get(i-1));
-                nums.set(i-1, tmp);
-                return serialize(nums);
+        int m = num1.length();
+        int n = num2.length();
+        int[] ans = new int[m* n];
+        for(int i=m-1;i>=0;i--) {
+            System.out.print("debug1: ");
+            System.out.println(i);
+            int tmp = num1.charAt(i) - '0';
+            for(int j = n-1;j>=0;j--) {
+                System.out.print("debug2: ");
+                System.out.println(j);
+                int tmp2=  num2.charAt(j) - '0';
+                //System.out.print("debug: ");
+                //System.out.println(tmp * tmp2);
+                ans[i+j+1] += tmp * tmp2;
             }
         }
-        return -1;
-    }
 
-    private int serialize(List<Integer> nums) {
-        for (int i = 0; i < nums.size(); i++) {
-
+        for(int i= m+n -1; i>0;i--) {
+            ans[i-1] += ans[i] / 10; // 进位值
+            ans[i] %= 10; // 剩余的值
         }
+        int i= 0 ;
+        String ansStr = "";
+        while(i<m+n) {
+            ansStr+=ans[i];
+            i++;
+        }
+        return ansStr;
     }
+
 }
-
-
